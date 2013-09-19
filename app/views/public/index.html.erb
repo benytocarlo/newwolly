@@ -1,112 +1,215 @@
-<section id="wrapper">
-<div id="carbonads-container"><div class="carbonad"><div id="azcarbon"></div><script type="text/javascript">var z = document.createElement("script"); z.type = "text/javascript"; z.async = true; z.src = "http://engine.carbonads.com/z/14060/azcarbon_2_1_0_VERT"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(z, s);</script></div></div>
-    <header>
-      <h1>Selecciona imagen para el no fans</h1>
-    </header>
-	<article>
-  <div id="holder">
-  </div> 
-  <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
-  <p id="filereader">File API & FileReader API not supported</p>
-  <p id="formdata">XHR2's FormData is not supported</p>
-  <p id="progress">XHR2's upload progress isn't supported</p>
-  <p>Upload progress: <progress id="uploadprogress" min="0" max="100" value="0">0</progress></p>
-</article>
-<script>
-var holder = document.getElementById('holder'),
-    tests = {
-      filereader: typeof FileReader != 'undefined',
-      dnd: 'draggable' in document.createElement('span'),
-      formdata: !!window.FormData,
-      progress: "upload" in new XMLHttpRequest
-    }, 
-    support = {
-      filereader: document.getElementById('filereader'),
-      formdata: document.getElementById('formdata'),
-      progress: document.getElementById('progress')
-    },
-    acceptedTypes = {
-      'image/png': true,
-      'image/jpeg': true,
-      'image/gif': true
-    },
-    progress = document.getElementById('uploadprogress'),
-    fileupload = document.getElementById('upload');
+<div class="facebookBackground" id="decorEditBackground" style="display: block; width: 856px; height: 1016px;">
+	<div class="facebookHeader"></div>
+	<section id="wrapper">
+	
+	<div id="carbonads-container"><div class="carbonad"><div id="azcarbon"></div></div></div>
+	    <header>
+	      <h1>Selecciona imagen para el no fans</h1>
+	    </header>
+		<article>
+	  <div id="holder">
+	  </div> 
+	  <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
+	  <p id="filereader">File API & FileReader API not supported</p>
+	  <p id="formdata">XHR2's FormData is not supported</p>
+	  <p id="progress">XHR2's upload progress isn't supported</p>
+	  <p>Upload progress: <progress id="uploadprogress" min="0" max="100" value="0">0</progress></p>
+	</article>
+	<script>
+	var holder = document.getElementById('holder'),
+	    tests = {
+	      filereader: typeof FileReader != 'undefined',
+	      dnd: 'draggable' in document.createElement('span'),
+	      formdata: !!window.FormData,
+	      progress: "upload" in new XMLHttpRequest
+	    }, 
+	    support = {
+	      filereader: document.getElementById('filereader'),
+	      formdata: document.getElementById('formdata'),
+	      progress: document.getElementById('progress')
+	    },
+	    acceptedTypes = {
+	      'image/png': true,
+	      'image/jpeg': true,
+	      'image/gif': true
+	    },
+	    progress = document.getElementById('uploadprogress'),
+	    fileupload = document.getElementById('upload');
 
-"filereader formdata progress".split(' ').forEach(function (api) {
-  if (tests[api] === false) {
-    support[api].className = 'fail';
-  } else {
-    // FFS. I could have done el.hidden = true, but IE doesn't support
-    // hidden, so I tried to create a polyfill that would extend the
-    // Element.prototype, but then IE10 doesn't even give me access
-    // to the Element object. Brilliant.
-    support[api].className = 'hidden';
-  }
-});
+	"filereader formdata progress".split(' ').forEach(function (api) {
+	  if (tests[api] === false) {
+	    support[api].className = 'fail';
+	  } else {
+	    // FFS. I could have done el.hidden = true, but IE doesn't support
+	    // hidden, so I tried to create a polyfill that would extend the
+	    // Element.prototype, but then IE10 doesn't even give me access
+	    // to the Element object. Brilliant.
+	    support[api].className = 'hidden';
+	  }
+	});
 
-function previewfile(file) {
-  if (tests.filereader === true && acceptedTypes[file.type] === true) {
-    var reader = new FileReader();
-    reader.onload = function (event) {
-      var image = new Image();
-      image.src = event.target.result;
-      image.width = 250; // a fake resize
-      holder.appendChild(image);
-    };
+	function previewfile(file) {
+	  if (tests.filereader === true && acceptedTypes[file.type] === true) {
+	    var reader = new FileReader();
+	    reader.onload = function (event) {
+	      var image = new Image();
+	      image.src = event.target.result;
+	      image.width = 250; // a fake resize
+	      holder.appendChild(image);
+	    };
 
-    reader.readAsDataURL(file);
-  }  else {
-    holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');
-    console.log(file);
-  }
-}
+	    reader.readAsDataURL(file);
+	  }  else {
+	    holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');
+	    console.log(file);
+	  }
+	}
 
-function readfiles(files) {
-    debugger;
-    var formData = tests.formdata ? new FormData() : null;
-    for (var i = 0; i < files.length; i++) {
-      if (tests.formdata) formData.append('file', files[i]);
-      previewfile(files[i]);
-    }
+	function readfiles(files) {
+	    debugger;
+	    var formData = tests.formdata ? new FormData() : null;
+	    for (var i = 0; i < files.length; i++) {
+	      if (tests.formdata) formData.append('file', files[i]);
+	      previewfile(files[i]);
+	    }
 
-    // now post a new XHR request
-    if (tests.formdata) {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/devnull.php');
-      xhr.onload = function() {
-        progress.value = progress.innerHTML = 100;
-      };
+	    // now post a new XHR request
+	    if (tests.formdata) {
+	      var xhr = new XMLHttpRequest();
+	      xhr.open('POST', '/devnull.php');
+	      xhr.onload = function() {
+	        progress.value = progress.innerHTML = 100;
+	      };
 
-      if (tests.progress) {
-        xhr.upload.onprogress = function (event) {
-          if (event.lengthComputable) {
-            var complete = (event.loaded / event.total * 100 | 0);
-            progress.value = progress.innerHTML = complete;
-          }
-        }
-      }
+	      if (tests.progress) {
+	        xhr.upload.onprogress = function (event) {
+	          if (event.lengthComputable) {
+	            var complete = (event.loaded / event.total * 100 | 0);
+	            progress.value = progress.innerHTML = complete;
+	          }
+	        }
+	      }
 
-      xhr.send(formData);
-    }
-}
+	      xhr.send(formData);
+	    }
+	}
 
-if (tests.dnd) { 
-  holder.ondragover = function () { this.className = 'hover'; return false; };
-  holder.ondragend = function () { this.className = ''; return false; };
-  holder.ondrop = function (e) {
-    this.className = '';
-    e.preventDefault();
-    readfiles(e.dataTransfer.files);
-  }
-} else {
-  fileupload.className = 'hidden';
-  fileupload.querySelector('input').onchange = function () {
-    readfiles(this.files);
-  };
-}
+	if (tests.dnd) { 
+	  holder.ondragover = function () { this.className = 'hover'; return false; };
+	  holder.ondragend = function () { this.className = ''; return false; };
+	  holder.ondrop = function (e) {
+	    this.className = '';
+	    e.preventDefault();
+	    readfiles(e.dataTransfer.files);
+	  }
+	} else {
+	  fileupload.className = 'hidden';
+	  fileupload.querySelector('input').onchange = function () {
+	    readfiles(this.files);
+	  };
+	}
 
-</script><a id="html5badge" href="http://www.w3.org/html/logo/">
+	</script>
+	<div id="hb-help-tooltip" style="left: 322px; top: 558px;"></div>
+	<div id="shell">
+	
+		<div id="hb-shell">
+			<div id="hb-top-wrap" class="hb-main-wrap">
+				<div id="hb-global-settings-wrap">
+					<h1>Global Settings</h1>
+					<table>
+						<tbody><tr>
+							<td width="100">Show tooltips on: </td>
+							<td>
+								<select id="show-select" autocomplete="off">
+									<option value="mouseover" selected="">Mouseover</option>
+									<option value="click">Click</option>
+									<option value="always">Always Visible</option>
+								</select>
+								<div class="form-help">This option determines how the user will trigger the tooltips - when he clicks on the spot, when he hovers the mouse over it, or the tooltips will be visible all the time. This is not active in the content builder.</div>
+							</td>
+						</tr>
+					</tbody></table>
+				</div>
+			</div>
+			<div id="hb-main-wrap" class="hb-main-wrap">
+				<div id="hb-settings-wrap">
+					<h2>Selected Spot Settings</h2>
+					<table>
+						<tbody><tr>
+							<td width="100">Spot visibility: </td>
+							<td>
+								<select id="visible-select" disabled="disabled">
+									<option value="visible">Visible</option>
+									<option value="invisible" selected="">Invisible</option>
+								</select>
+								<div class="form-help">Determines the visibility of the spot. If set to "invisible", the user will not know that there is a spot, unless he triggers it. <br>The spot will not look the same in the final product as it looks in the content builder.</div>
+							</td>
+						</tr>
+						<tr>
+							<td width="100">Tooltip width: </td>
+							<td>
+								<input type="text" id="tooltip-width" disabled="disabled">
+								<!-- <br /> -->
+								<input type="checkbox" id="tooltip-auto-width" checked="" value="Auto" disabled="disabled"><label for="tooltip-auto-width">Auto</label>
+								<div class="form-help">If you need a fixed value for the tooltip set a number in pixels (without "px") in the text field. If you don't, then check "Auto".</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Popup position: </td>
+							<td>
+								<select id="position-select" disabled="disabled">
+									<option value="left" selected="">Left</option>
+									<option value="right">Right</option>
+									<option value="top">Top</option>
+									<option value="bottom">Bottom</option>
+								</select>
+								<div class="form-help">Choose where you want the popup to appear, relative to the spot that it belongs to.</div>
+							</td>
+						</tr>
+						<tr>
+							<td>Content: </td>
+							<td>
+								<textarea id="content" autocomplete="off" disabled="disabled"></textarea>
+							</td>
+						</tr>
+						<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+						<tr>
+							<td>Delete?</td>
+							<td><input type="button" id="delete" value="Delete Spot" disabled="disabled"></td>
+						</tr>
+					</tbody></table>
+				</div>
+				<div id="hb-map-wrap">
+					<img src="">
+				</div>
+				<div class="clear"></div>
+			</div>
+			<div class="hb-main-wrap" id="submit-wrap">
+				<div id="result" class="ndd-button-green-regular">Generate</div>
+			</div>		
+			<div id="hb-bottom-wrap" class="hb-main-wrap">
+				<h1>Live Preview</h1>
+				<div id="hb-live-preview"></div>
+			</div>
+			<div id="hb-bottom-wrap" class="hb-main-wrap">	
+				<div class="left">
+					<h1>HTML Code</h1>
+					<textarea id="hb-html-code" autocomplete="off"></textarea>
+				</div>
+			
+				<div class="right">
+					<h1>JavaScript Code</h1>
+					<textarea id="hb-javascript-code" autocomplete="off"></textarea>
+				</div>
+				<div class="clear"></div>			
+			</div>
+		</div>
+	
+	
+	</div>
 
-    <footer></footer> 
-</section>
+	
+	    <footer></footer> 
+	</section>
+</div>

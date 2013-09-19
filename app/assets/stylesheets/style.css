@@ -6,3 +6,19 @@ progress { width: 100%; }
 progress:after { content: '%'; }
 .fail { background: #c00; padding: 2px; color: #fff; }
 .hidden { display: none !important;}
+
+.facebookBackground {
+background-image: url(../assets/facebook_back.png);
+background-repeat: repeat-y;
+background-color: #e7ebf2;
+height: 100%;
+}
+
+.facebookHeader {
+background-image: url(../assets/background-header.png);
+background-repeat: no-repeat;
+height: 98px;
+opacity: 0.35;
+-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=35)";
+filter: alpha(opacity=35);
+}
