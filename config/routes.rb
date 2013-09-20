@@ -4,7 +4,14 @@ Wollyv2::Application.routes.draw do
 
   root :to => 'public#index'
   
-  get "formulario" => "public#form"
+  get "formulario"          => "public#form"
+  get "help"                => "public#help"
+  get "user/profile"        => "user#profile"
+  get "applications"        => "public#applications"
+  get "participants"        => "public#participants"
+  get "register/list"       => "register#list"
+  get "user/list"           => "user#list"
+  
   
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
