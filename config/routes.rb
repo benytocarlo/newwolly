@@ -1,6 +1,12 @@
 Wollyv2::Application.routes.draw do
-  
+
   root :to => 'public#index'
+  
+  get "formulario" => "public#form"
+  
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

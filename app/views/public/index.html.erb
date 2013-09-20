@@ -1,20 +1,18 @@
-<div class="facebookBackground" id="decorEditBackground" style="display: block; width: 856px; height: 1016px;">
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<div class="facebookBackground" id="decorEditBackground" style="display: block; width: 710px; height: 830px;float:left;">
 	<div class="facebookHeader"></div>
 	<section id="wrapper">
-	
 	<div id="carbonads-container"><div class="carbonad"><div id="azcarbon"></div></div></div>
-	    <header>
-	      <h1>Selecciona imagen para el no fans</h1>
-	    </header>
-		<article>
 	  <div id="holder">
-	  </div> 
+		  <h1 class="textholder">Selecciona imagen para el no fans</h1>
+		  <img src="" class="imageedit" width="660" height="100%">
+	  </div>
 	  <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
 	  <p id="filereader">File API & FileReader API not supported</p>
 	  <p id="formdata">XHR2's FormData is not supported</p>
 	  <p id="progress">XHR2's upload progress isn't supported</p>
-	  <p>Upload progress: <progress id="uploadprogress" min="0" max="100" value="0">0</progress></p>
-	</article>
+	  <p class="progressbar">Progreso de Subida: <progress id="uploadprogress" min="0" max="100" value="0">0</progress></p>
 	<script>
 	var holder = document.getElementById('holder'),
 	    tests = {
@@ -55,7 +53,9 @@
 	      var image = new Image();
 	      image.src = event.target.result;
 	      image.width = 250; // a fake resize
-	      holder.appendChild(image);
+	      //holder.appendChild(image);
+		  $(".textholder").hide();
+		  $(".imageedit").attr("src",image.src);
 	    };
 
 	    reader.readAsDataURL(file);
@@ -110,106 +110,24 @@
 	}
 
 	</script>
-	<div id="hb-help-tooltip" style="left: 322px; top: 558px;"></div>
-	<div id="shell">
-	
-		<div id="hb-shell">
-			<div id="hb-top-wrap" class="hb-main-wrap">
-				<div id="hb-global-settings-wrap">
-					<h1>Global Settings</h1>
-					<table>
-						<tbody><tr>
-							<td width="100">Show tooltips on: </td>
-							<td>
-								<select id="show-select" autocomplete="off">
-									<option value="mouseover" selected="">Mouseover</option>
-									<option value="click">Click</option>
-									<option value="always">Always Visible</option>
-								</select>
-								<div class="form-help">This option determines how the user will trigger the tooltips - when he clicks on the spot, when he hovers the mouse over it, or the tooltips will be visible all the time. This is not active in the content builder.</div>
-							</td>
-						</tr>
-					</tbody></table>
-				</div>
-			</div>
-			<div id="hb-main-wrap" class="hb-main-wrap">
-				<div id="hb-settings-wrap">
-					<h2>Selected Spot Settings</h2>
-					<table>
-						<tbody><tr>
-							<td width="100">Spot visibility: </td>
-							<td>
-								<select id="visible-select" disabled="disabled">
-									<option value="visible">Visible</option>
-									<option value="invisible" selected="">Invisible</option>
-								</select>
-								<div class="form-help">Determines the visibility of the spot. If set to "invisible", the user will not know that there is a spot, unless he triggers it. <br>The spot will not look the same in the final product as it looks in the content builder.</div>
-							</td>
-						</tr>
-						<tr>
-							<td width="100">Tooltip width: </td>
-							<td>
-								<input type="text" id="tooltip-width" disabled="disabled">
-								<!-- <br /> -->
-								<input type="checkbox" id="tooltip-auto-width" checked="" value="Auto" disabled="disabled"><label for="tooltip-auto-width">Auto</label>
-								<div class="form-help">If you need a fixed value for the tooltip set a number in pixels (without "px") in the text field. If you don't, then check "Auto".</div>
-							</td>
-						</tr>
-						<tr>
-							<td>Popup position: </td>
-							<td>
-								<select id="position-select" disabled="disabled">
-									<option value="left" selected="">Left</option>
-									<option value="right">Right</option>
-									<option value="top">Top</option>
-									<option value="bottom">Bottom</option>
-								</select>
-								<div class="form-help">Choose where you want the popup to appear, relative to the spot that it belongs to.</div>
-							</td>
-						</tr>
-						<tr>
-							<td>Content: </td>
-							<td>
-								<textarea id="content" autocomplete="off" disabled="disabled"></textarea>
-							</td>
-						</tr>
-						<tr><td>&nbsp;</td><td>&nbsp;</td></tr>
-						<tr>
-							<td>Delete?</td>
-							<td><input type="button" id="delete" value="Delete Spot" disabled="disabled"></td>
-						</tr>
-					</tbody></table>
-				</div>
-				<div id="hb-map-wrap">
-					<img src="">
-				</div>
-				<div class="clear"></div>
-			</div>
-			<div class="hb-main-wrap" id="submit-wrap">
-				<div id="result" class="ndd-button-green-regular">Generate</div>
-			</div>		
-			<div id="hb-bottom-wrap" class="hb-main-wrap">
-				<h1>Live Preview</h1>
-				<div id="hb-live-preview"></div>
-			</div>
-			<div id="hb-bottom-wrap" class="hb-main-wrap">	
-				<div class="left">
-					<h1>HTML Code</h1>
-					<textarea id="hb-html-code" autocomplete="off"></textarea>
-				</div>
-			
-				<div class="right">
-					<h1>JavaScript Code</h1>
-					<textarea id="hb-javascript-code" autocomplete="off"></textarea>
-				</div>
-				<div class="clear"></div>			
-			</div>
-		</div>
-	
-	
-	</div>
-
-	
-	    <footer></footer> 
 	</section>
 </div>
+	<div class="" id="decorEditBackground" style="display: block; float:left;width: 156px; height: 1016px;">
+	<a href="#" class="addbottom">Añadir Boton</a>
+</div>
+<script>
+$('.addbottom').click(function(){
+	$('#holder').append( "<a href='' class='startbutton'><div class='minibox scale'>BOTON</div></a>" );
+	$(".minibox" ).draggable({ containment: "#holder", scroll: true });
+	$(".minibox").resizable({containment: "#holder"});
+});
+</script>
+
+
+
+
+
+
+
+
+

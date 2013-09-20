@@ -1,0 +1,247 @@
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-theme.min.css">
+<!-- Latest compiled and minified JavaScript -->
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script type="text/javascript" src="jquery.sheepItPlugin-1.1.1.min.js"></script>
+<div class="facebookBackground" id="decorEditBackground" style="display: block; width: 710px; height: 830px;float:left;">
+	<div class="facebookHeader"></div>
+	<section id="wrapper">
+	<div id="carbonads-container"><div class="carbonad"><div id="azcarbon"></div></div></div>
+	  <div id="holder">
+		  <h1 class="textholder">Selecciona imagen para el no fans</h1>
+		  <img src="" class="imageedit" width="660" height="100%" />
+		  
+ 	  	 <div class="formulario" style="display:none">
+ 	          <%= form_tag('',:id=>:registro, :method => "post") do  %>
+ 	            <label><%= text_field_tag(:nombre, @nombre, :onkeypress => "return validatxt(event)", :placeholder => "Nombre") %></label>
+ 	            <label><%= text_field_tag(:apellido, @apellido, :onkeypress => "return validatxt(event)", :placeholder => "Apellido") %></label>
+ 	            <label><%= text_field_tag(:rut, @rut, :onkeyup => "this.value = formato_rut(this.value, true)", :maxlength => "10", :placeholder => "Rut") %></label>
+ 	            <label><%= text_field_tag(:correo, @correo, :maxlength => "150", :placeholder => "Email") %></label>
+ 	            <label><%= text_field_tag(:telefono, @telefono, :onkeypress => "return validanum(event)", :placeholder => "Telefono") %></label>
+ 	          <% end %>
+ 	          <a href="#" id="btn_enviar" class="btn_despega">Continuar</a>
+ 	  	</div>
+		  
+	  </div>
+	  <p id="upload" class="hidden"><label>Drag & drop not supported, but you can still upload via this input field:<br><input type="file"></label></p>
+	  <p id="filereader">File API & FileReader API not supported</p>
+	  <p id="formdata">XHR2's FormData is not supported</p>
+	  <p id="progress">XHR2's upload progress isn't supported</p>
+	  <p class="progressbar">Progreso de Subida: <progress id="uploadprogress" min="0" max="100" value="0">0</progress></p>
+	<script>
+	var holder = document.getElementById('holder'),
+	    tests = {
+	      filereader: typeof FileReader != 'undefined',
+	      dnd: 'draggable' in document.createElement('span'),
+	      formdata: !!window.FormData,
+	      progress: "upload" in new XMLHttpRequest
+	    }, 
+	    support = {
+	      filereader: document.getElementById('filereader'),
+	      formdata: document.getElementById('formdata'),
+	      progress: document.getElementById('progress')
+	    },
+	    acceptedTypes = {
+	      'image/png': true,
+	      'image/jpeg': true,
+	      'image/gif': true
+	    },
+	    progress = document.getElementById('uploadprogress'),
+	    fileupload = document.getElementById('upload');
+
+	"filereader formdata progress".split(' ').forEach(function (api) {
+	  if (tests[api] === false) {
+	    support[api].className = 'fail';
+	  } else {
+	    // FFS. I could have done el.hidden = true, but IE doesn't support
+	    // hidden, so I tried to create a polyfill that would extend the
+	    // Element.prototype, but then IE10 doesn't even give me access
+	    // to the Element object. Brilliant.
+	    support[api].className = 'hidden';
+	  }
+	});
+
+	function previewfile(file) {
+	  if (tests.filereader === true && acceptedTypes[file.type] === true) {
+	    var reader = new FileReader();
+	    reader.onload = function (event) {
+	      var image = new Image();
+	      image.src = event.target.result;
+	      image.width = 250; // a fake resize
+	      //holder.appendChild(image);
+		  $(".textholder").hide();
+		  $(".imageedit").attr("src",image.src);
+	    };
+
+	    reader.readAsDataURL(file);
+	  }  else {
+	    holder.innerHTML += '<p>Uploaded ' + file.name + ' ' + (file.size ? (file.size/1024|0) + 'K' : '');
+	    console.log(file);
+	  }
+	}
+
+	function readfiles(files) {
+	    debugger;
+	    var formData = tests.formdata ? new FormData() : null;
+	    for (var i = 0; i < files.length; i++) {
+	      if (tests.formdata) formData.append('file', files[i]);
+	      previewfile(files[i]);
+	    }
+
+	    // now post a new XHR request
+	    if (tests.formdata) {
+	      var xhr = new XMLHttpRequest();
+	      xhr.open('POST', '/devnull.php');
+	      xhr.onload = function() {
+	        progress.value = progress.innerHTML = 100;
+	      };
+
+	      if (tests.progress) {
+	        xhr.upload.onprogress = function (event) {
+	          if (event.lengthComputable) {
+	            var complete = (event.loaded / event.total * 100 | 0);
+	            progress.value = progress.innerHTML = complete;
+	          }
+	        }
+	      }
+
+	      xhr.send(formData);
+	    }
+	}
+
+	if (tests.dnd) { 
+	  holder.ondragover = function () { this.className = 'hover'; return false; };
+	  holder.ondragend = function () { this.className = ''; return false; };
+	  holder.ondrop = function (e) {
+	    this.className = '';
+	    e.preventDefault();
+	    readfiles(e.dataTransfer.files);
+	  }
+	} else {
+	  fileupload.className = 'hidden';
+	  fileupload.querySelector('input').onchange = function () {
+	    readfiles(this.files);
+	  };
+	}
+	
+	var addressesForm = {};
+ 
+	$(document).ready(function() {
+     
+     
+	     addressesForm = $("#person_addresses").sheepIt({
+	        separator: '',
+	        allowRemoveLast: true,
+	        allowRemoveCurrent: true,
+	        allowRemoveAll: true,
+	        allowAdd: true,
+	        allowAddN: true,
+         
+	        // Limits
+	        maxFormsCount: 10,
+	        minFormsCount: 0,
+	        iniFormsCount: 0,
+	        nestedForms: [
+	            {
+	                id: 'person_addresses_#index#_phones',
+	                options: { 
+	                     indexFormat: '#index_phones#',
+	                     maxFormsCount: 5
+	                }
+	            }
+	        ],
+	        data: [
+	            {
+	                'address': '343 West Broadway',
+                 
+	                // Embedded form data
+	                'person_addresses_#index#_phones': [
+	                    { 'phone': '(212) 925-4706' },
+	                    { 'phone': '(212) 928-4709' }
+	                ]
+	            },
+	            {
+	                'address': '454 West Broadway',
+                 
+	                // Embedded form data
+	                'person_addresses_#index#_phones': [
+	                    { 'phone': '(212) 45-6806' },
+	                    { 'phone': '(212) 48-6809' }
+	                ]
+	            }
+	        ],
+	        pregeneratedForms: ['pregenerated_form_1']
+         
+	    });
+     
+     
+     
+	});
+ 
+	function executeAPI() {
+                     
+	    // Using API
+     
+	    // Inject data into main form
+	    alert('Inject data');
+	    addressesForm.inject([
+	        {
+	        'address': 'Injected address'
+	        }
+	    ]);
+     
+	    // Add a form
+	    alert('Add a form');
+	    addressesForm.addForm();
+     
+	    // Get all forms forms
+	    var forms = addressesForm.getForms();
+     
+	    // Inject new data on each form
+	    alert('Insert new data on each form');
+	    for (x in forms) {
+	        forms[x].inject({ 'address': "Injected new address" });
+	    }
+     
+	    // Remove a form
+	    alert('Remove first form');
+	    addressesForm.removeForm(0);
+     
+	    // Get a nested form and inject data on it
+	    var phoneForm = addressesForm.getForm(0).getNestedForm(0);
+	    phoneForm.inject([
+	        { 'phone': "Injected phone" }
+	    ]);
+     
+	    // Remove all forms
+	    alert('Remove all forms');
+	    addressesForm.removeAllForms();
+     
+	}
+	</script>
+	</section>
+</div>
+	<div class="" id="decorEditBackground" style="display: block; float:left;width: 156px; height: 1016px;">
+	<a href="#" class="addbottom">Añadir Formulario</a>
+</div>
+<script>
+$('.addbottom').click(function(){
+	$('.formulario').show();
+	$(".formulario" ).draggable({ containment: "#holder", scroll: true });
+	$(".formulario").resizable({containment: "#holder"});
+});
+</script>
+
+
+
+
+
+
+
+
+
