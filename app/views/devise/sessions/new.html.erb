@@ -1,17 +1,43 @@
-<h2>Sign in</h2>
+<section id="content" class="m-t-lg wrapper-md animated fadeInUp">
+  <a class="nav-brand" href="index.html">Wolly</a>
+  <div class="row m-n">
+    <div class="col-md-4 col-md-offset-4 m-t-lg">
+      <section class="panel">
+        <header class="panel-heading text-center">
+          Sign in
+        </header>
+		<%= form_for(resource, :as => resource_name, :html => { :class => "panel-body" }, :url => session_path(resource_name)) do |f| %>
+		  <div class="form-group"><%= f.label :email, :class => 'control-label' %>
+		  <%= f.email_field :email, :autofocus => true, :placeholder => 'test@example.com', :class => 'form-control' %></div>
 
-<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
-  <div><%= f.label :email %><br />
-  <%= f.email_field :email, :autofocus => true %></div>
+		  <div class="form-group"><%= f.label :password, :class => 'control-label' %>
+		  <%= f.password_field :password, :placeholder => 'password', :class => 'form-control' %></div>
 
-  <div><%= f.label :password %><br />
-  <%= f.password_field :password %></div>
+		  <% if devise_mapping.rememberable? -%>
+		    <div class="checkbox">
+				<%= f.label :remember_me %>
+					<%= f.check_box :remember_me %>
+			</div>
+		  <% end -%>
+		  <div class="line line-dashed"></div>
+		  <div><%= f.submit "Sign in", :class => 'btn btn-info' %></div>
+		  <div class="line line-dashed"></div>
+		  <%= render "devise/shared/links" %>
+		<% end %>
 
-  <% if devise_mapping.rememberable? -%>
-    <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
-  <% end -%>
+		
+          
 
-  <div><%= f.submit "Sign in" %></div>
-<% end %>
+      </section>
+    </div>
+  </div>
+</section>
+<!-- footer -->
+<footer id="footer">
+  <div class="text-center padder clearfix">
+    <p>
+      <small>&copy; 2013</small>
+    </p>
+  </div>
+</footer>
 
-<%= render "devise/shared/links" %>
