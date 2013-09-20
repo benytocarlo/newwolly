@@ -1,5 +1,7 @@
 Wollyv2::Application.routes.draw do
 
+  devise_for :users
+
   root :to => 'public#index'
   
   get "formulario" => "public#form"
